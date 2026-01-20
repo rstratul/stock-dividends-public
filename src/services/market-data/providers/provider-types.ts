@@ -3,13 +3,12 @@ import type {
   DividendRecord,
   FinancialRecord,
 } from "@/types/market";
-import type { MarketProviderName } from "@/services/market-data/providers/provider-types";
 
-export interface MarketDataService {
+export interface MarketDataProvider {
   listAssets(): Promise<AssetSummary[]>;
   getAsset(ticker: string): Promise<AssetSummary | null>;
   listDividends(ticker: string): Promise<DividendRecord[]>;
   listFinancials(ticker: string): Promise<FinancialRecord[]>;
 }
 
-export type { MarketProviderName };
+export type MarketProviderName = "mock" | "eodhd" | "fmp" | "bvb";
