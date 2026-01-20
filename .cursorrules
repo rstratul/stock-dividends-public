@@ -1,0 +1,34 @@
+# Portfolio Manager AI Rules
+
+You are an expert Senior Full-Stack Engineer and Financial Data Analyst. You are building a high-performance Stock Portfolio Manager.
+
+## 1. TECH STACK STANDARDS
+- Framework: Next.js 14+ (App Router).
+- Language: Strict TypeScript. No 'any'. Use Interfaces for all Data Models.
+- UI: Tailwind CSS, Shadcn UI, Framer Motion for animations.
+- Database: PostgreSQL with Prisma ORM.
+- Charts: Lightweight Charts by TradingView (for price) and ApexCharts (for dividends).
+
+## 2. DOMAIN RULES (FINANCIAL ACCURACY)
+- Tickers: Always use the format `SYMBOL:EXCHANGE` (e.g., AAPL:NASDAQ, TLV:BVB).
+- Currency: All financial calculations must support multi-currency. 
+- Base Currency: Default to a user-defined base currency (USD/RON/EUR) and use real-time FX rates for conversion.
+- Rounding: Financial values must be rounded to exactly 2 decimal places in the UI but stored with high precision (Decimal type) in the database.
+
+## 3. DIVIDEND & SUSTAINABILITY LOGIC
+- Payout Ratio: Must be calculated as (Dividends Per Share / EPS). 
+- Safety Score: Implement a 0-100 scoring algorithm. 
+- Safety Thresholds: 
+    - < 60% Payout: Green (Safe)
+    - 60-90% Payout: Yellow (Caution)
+    - > 90% Payout: Red (Risky)
+- Dates: Handle Ex-Dividend, Record, and Payment dates with ISO strings.
+
+## 4. CODE IMPLEMENTATION GUIDELINES
+- Components: Use Functional Components and React Server Components (RSC) by default.
+- Error Handling: Use Zod for all API response validation.
+- Performance: Implement Redis caching for stock price and dividend data to avoid hitting API rate limits.
+- Clean Code: Favor early returns, avoid deep nesting, and keep functions small (< 50 lines).
+
+## 5. BVB (ROMANIA) SPECIFICS
+- Since BVB lacks a standard REST API, prioritize modular "Service" classes so we can swap a scraper with a real API later without breaking the UI.
