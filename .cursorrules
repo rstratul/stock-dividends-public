@@ -1,34 +1,27 @@
-# Portfolio Manager AI Rules
+# Portfolio Manager AI Rules (React + Node.js Version)
 
-You are an expert Senior Full-Stack Engineer and Financial Data Analyst. You are building a high-performance Stock Portfolio Manager.
+You are an expert Full-Stack Engineer. You are building a Stock Portfolio Manager using a decoupled React frontend and a Node.js backend.
 
-## 1. TECH STACK STANDARDS
-- Framework: Next.js 14+ (App Router).
-- Language: Strict TypeScript. No 'any'. Use Interfaces for all Data Models.
-- UI: Tailwind CSS, Shadcn UI, Framer Motion for animations.
+## 1. ARCHITECTURE STANDARDS
+- Frontend: React 18+ powered by Vite. Use Single Page Application (SPA) routing with 'react-router-dom'.
+- Backend: Node.js with Express.js. Use a 'src/server' or separate folder for backend logic.
+- NO Vercel-specific features (no Next.js, no Vercel Functions).
 - Database: PostgreSQL with Prisma ORM.
-- Charts: Lightweight Charts by TradingView (for price) and ApexCharts (for dividends).
 
 ## 2. DOMAIN RULES (FINANCIAL ACCURACY)
-- Tickers: Always use the format `SYMBOL:EXCHANGE` (e.g., AAPL:NASDAQ, TLV:BVB).
-- Currency: All financial calculations must support multi-currency. 
-- Base Currency: Default to a user-defined base currency (USD/RON/EUR) and use real-time FX rates for conversion.
-- Rounding: Financial values must be rounded to exactly 2 decimal places in the UI but stored with high precision (Decimal type) in the database.
+- Tickers: Always use format `SYMBOL:EXCHANGE` (e.g., AAPL:NASDAQ, TLV:BVB).
+- Currency: Store all values in their native currency + a 'base_currency_value' for sorting.
+- Precision: Use 'Decimal.js' or similar for financial math to avoid floating-point errors.
 
 ## 3. DIVIDEND & SUSTAINABILITY LOGIC
-- Payout Ratio: Must be calculated as (Dividends Per Share / EPS). 
-- Safety Score: Implement a 0-100 scoring algorithm. 
-- Safety Thresholds: 
-    - < 60% Payout: Green (Safe)
-    - 60-90% Payout: Yellow (Caution)
-    - > 90% Payout: Red (Risky)
-- Dates: Handle Ex-Dividend, Record, and Payment dates with ISO strings.
+- Payout Ratio: (Dividends Per Share / EPS).
+- Safety Score: 0-100 scale. 
+- Visuals: Use Shadcn UI badges or progress bars for safety grades (Red/Yellow/Green).
 
-## 4. CODE IMPLEMENTATION GUIDELINES
-- Components: Use Functional Components and React Server Components (RSC) by default.
-- Error Handling: Use Zod for all API response validation.
-- Performance: Implement Redis caching for stock price and dividend data to avoid hitting API rate limits.
-- Clean Code: Favor early returns, avoid deep nesting, and keep functions small (< 50 lines).
+## 4. CODE STYLE
+- Strict TypeScript: No 'any'. Define interfaces for 'Stock', 'Dividend', and 'Portfolio'.
+- API: Use 'Axios' or 'Fetch' on the frontend with a custom hook pattern (e.g., useStockData).
+- Environment Variables: Use .env for API keys and database URLs. Ensure Vite uses VITE_ prefix for frontend variables.
 
-## 5. BVB (ROMANIA) SPECIFICS
-- Since BVB lacks a standard REST API, prioritize modular "Service" classes so we can swap a scraper with a real API later without breaking the UI.
+## 5. BVB (ROMANIA) SUPPORT
+- Implement a modular 'MarketProvider' interface so BVB scraping logic is isolated from US API logic.

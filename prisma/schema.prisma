@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Stock {
+  id                String     @id @default(cuid())
+  ticker            String     @unique
+  symbol            String
+  exchange          String
+  name              String
+  sector            String?
+  currency          String
+  lastPrice         Decimal?   @db.Decimal(18, 6)
+  baseCurrencyValue Decimal?   @db.Decimal(18, 6)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  dividends         Dividend[]
+
+  @@index([exchange])
+}
+
+model Dividend {
+  id                String   @id @default(cuid())
+  stockId           String
+  exDate            DateTime
+  recordDate        DateTime?
+  payDate           DateTime
+  amount            Decimal  @db.Decimal(18, 6)
+  currency          String
+  baseCurrencyValue Decimal  @db.Decimal(18, 6)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@index([stockId, exDate])
+}
